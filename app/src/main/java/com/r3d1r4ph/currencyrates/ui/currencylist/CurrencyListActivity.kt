@@ -1,4 +1,4 @@
-package com.r3d1r4ph.currencyrates.ui
+package com.r3d1r4ph.currencyrates.ui.currencylist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
