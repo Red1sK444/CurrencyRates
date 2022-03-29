@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CurrencyRates</string>
+    <string name="app_name">Currency Rates</string>
 
     <!-- Currency List Screen -->
     <string name="currency_list">Список валют</string>

@@ -3,7 +3,7 @@ package com.r3d1r4ph.currencyrates.di
 import android.content.Context
 import androidx.viewbinding.BuildConfig
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.r3d1r4ph.currencyrates.data.currency.CurrencyService
+import com.r3d1r4ph.currencyrates.data.currency.network.CurrencyService
 import com.r3d1r4ph.currencyrates.utils.interceptors.NetworkConnectionInterceptor
 import com.r3d1r4ph.currencyrates.utils.interceptors.StatusCodeInterceptor
 import dagger.Module

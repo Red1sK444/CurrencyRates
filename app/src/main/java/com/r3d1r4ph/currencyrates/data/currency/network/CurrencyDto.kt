@@ -1,6 +1,6 @@
-package com.r3d1r4ph.currencyrates.data.currency
+package com.r3d1r4ph.currencyrates.data.currency.network
 
-import com.r3d1r4ph.currencyrates.domain.Currency
+import com.r3d1r4ph.currencyrates.data.currency.local.CurrencyEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -17,12 +17,13 @@ data class CurrencyDto(
     @SerialName("Value")
     val value: Float
 ) {
-    fun toDomain(): Currency =
-        Currency(
+    fun toEntity(relevanceId: Long) =
+        CurrencyEntity(
             id = id,
             name = name,
             numCode = numCode,
             charCode = charCode,
-            value = value
+            value = value,
+            relevance = relevanceId
         )
 }

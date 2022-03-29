@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.r3d1r4ph.currencyrates.R
@@ -30,15 +31,13 @@ class CurrencyListActivity : AppCompatActivity() {
 
         initObservers()
         initView()
-
-        viewModel.getGeneralData()
     }
 
     private fun initObservers() {
         viewModel.general.observe(this) {
             currencyAdapter.submitList(it.currencyList)
 
-            val offsetDateTime = OffsetDateTime.parse(it.timestamp)
+            val offsetDateTime = OffsetDateTime.parse(it.relevance.timestamp)
             val instant = offsetDateTime.toInstant()
             val ldt = offsetDateTime
                 .atZoneSameInstant(ZoneId.systemDefault())
@@ -54,6 +53,13 @@ class CurrencyListActivity : AppCompatActivity() {
                 getString(R.string.relevant_on, ldt.format(formatter))
         }
 
+        viewModel.loading.observe(this) {
+            with(viewBinding) {
+                currencyListSpinnerSpinKitView.isVisible = it
+                currencyListUpdateButton.isEnabled = !it
+            }
+        }
+
         viewModel.exception.observe(this) { holder ->
             viewBinding.currencyListRelevanceTextView.text = getString(R.string.relevant_on, "")
 
@@ -65,11 +71,18 @@ class CurrencyListActivity : AppCompatActivity() {
         }
     }
 
-    private fun initView() {
-        with(viewBinding.currencyListRecycler) {
+    private fun initView() = with(viewBinding) {
+        currencyListRecycler.apply {
             adapter = currencyAdapter
             layoutManager =
                 LinearLayoutManager(this@CurrencyListActivity, LinearLayoutManager.VERTICAL, false)
+        }
+
+        currencyListRelevanceTextView.text =
+            getString(R.string.relevant_on, "")
+
+        currencyListUpdateButton.setOnClickListener {
+            viewModel.loadGeneralData()
         }
     }
 

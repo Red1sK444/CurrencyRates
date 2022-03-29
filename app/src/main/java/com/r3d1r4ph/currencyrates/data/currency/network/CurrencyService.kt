@@ -1,4 +1,4 @@
-package com.r3d1r4ph.currencyrates.data.currency
+package com.r3d1r4ph.currencyrates.data.currency.network
 
 import retrofit2.Response
 import retrofit2.http.GET

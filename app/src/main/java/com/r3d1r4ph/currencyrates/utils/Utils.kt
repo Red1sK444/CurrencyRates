@@ -5,7 +5,7 @@ import retrofit2.Response
 
 suspend fun <DTO, DOMAIN> safeApiCall(
     apiCall: suspend () -> Response<DTO>,
-    onSuccess: (Response<DTO>) -> Result<DOMAIN>
+    onSuccess: suspend (Response<DTO>) -> Result<DOMAIN>
 ): Result<DOMAIN> {
     try {
         val response = apiCall.invoke()

@@ -1,8 +1,10 @@
 package com.r3d1r4ph.currencyrates.data.currency
 
 import com.r3d1r4ph.currencyrates.domain.General
+import kotlinx.coroutines.flow.Flow
 
 interface CurrencyRepository {
 
-    suspend fun getCurrencyList(): Result<General>
+    fun getGeneralInfo(): Flow<General>
+    suspend fun getCurrencyList(): Result<Boolean>
 }

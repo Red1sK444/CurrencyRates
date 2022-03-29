@@ -1,9 +1,6 @@
 package com.r3d1r4ph.currencyrates.ui.currencylist
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.r3d1r4ph.currencyrates.R
 import com.r3d1r4ph.currencyrates.data.currency.CurrencyRepository
 import com.r3d1r4ph.currencyrates.domain.General
@@ -12,6 +9,8 @@ import com.r3d1r4ph.currencyrates.utils.exceptions.ExceptionHolder
 import com.r3d1r4ph.currencyrates.utils.exceptions.NoConnectivityException
 import com.r3d1r4ph.currencyrates.utils.exceptions.StatusCodeException
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,23 +19,37 @@ class CurrencyListViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository
 ) : ViewModel() {
 
-    private val _general = MutableLiveData<General>()
     val general: LiveData<General>
-        get() = _general
+        get() = currencyRepository.getGeneralInfo()
+            .onEach { _loading.value = false }
+            .asLiveData()
+
+    private val _loading = MutableLiveData(true)
+    val loading: LiveData<Boolean>
+        get() = _loading
 
     private val _exception = MutableLiveData<ExceptionHolder>()
     val exception: LiveData<ExceptionHolder>
         get() = _exception
 
-    fun getGeneralData() {
+    init {
         viewModelScope.launch {
+            while (true) {
+                loadGeneralData()
+                delay(100000)
+            }
+        }
+    }
+
+    fun loadGeneralData() {
+        viewModelScope.launch {
+            _loading.value = true
             val response = currencyRepository.getCurrencyList()
-            if (response.isSuccess) {
-                _general.value = response.getOrThrow()
-            } else {
+
+            if (response.isFailure) {
                 handleException(response.exceptionOrNull())
             }
-
+            _loading.value = false
         }
     }
 
