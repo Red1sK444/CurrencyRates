@@ -8,8 +8,8 @@ import kotlinx.serialization.Serializable
 data class CurrencyDto(
     @SerialName("ID")
     val id: String,
-    @SerialName("NumCode")
-    val numCode: String,
+    @SerialName("Nominal")
+    val nominal: Int,
     @SerialName("CharCode")
     val charCode: String,
     @SerialName("Name")
@@ -21,7 +21,7 @@ data class CurrencyDto(
         CurrencyEntity(
             id = id,
             name = name,
-            numCode = numCode,
+            nominal = nominal,
             charCode = charCode,
             value = value,
             relevance = relevanceId

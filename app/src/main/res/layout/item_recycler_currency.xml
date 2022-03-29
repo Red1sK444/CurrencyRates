@@ -4,46 +4,54 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
-    <TextView
-        android:id="@+id/itemCurrencyNameTextView"
-        android:layout_width="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/itemMeaningCardView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Австралийский доллар"
+        android:layout_gravity="center"
+        android:background="@color/white"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="?attr/colorPrimary"
+        app:strokeWidth="1dp">
 
-    <TextView
-        android:id="@+id/itemCurrencyCharCodeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="AUD"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemCurrencyNameTextView" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/itemCurrencyNumCodeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="036"
-        app:layout_constraintStart_toEndOf="@+id/itemCurrencyCharCodeTextView"
-        app:layout_constraintTop_toBottomOf="@+id/itemCurrencyNameTextView" />
+            <TextView
+                android:id="@+id/itemCurrencyNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/itemCurrencyValueTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="71.8611"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemCurrencyCharCodeTextView" />
+            <TextView
+                android:id="@+id/itemCurrencyCharCodeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/itemCurrencyNominalTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/itemCurrencyValueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

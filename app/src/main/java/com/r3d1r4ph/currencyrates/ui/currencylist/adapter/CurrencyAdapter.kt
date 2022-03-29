@@ -1,4 +1,4 @@
-package com.r3d1r4ph.currencyrates.ui.currencylist
+package com.r3d1r4ph.currencyrates.ui.currencylist.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -39,9 +39,12 @@ class CurrencyAdapter : ListAdapter<Currency, CurrencyAdapter.ViewHolder>(DIFF) 
 
         fun bind(currency: Currency) = with(binding) {
             itemCurrencyNameTextView.text = currency.name
-            itemCurrencyCharCodeTextView.text = currency.charCode
-            itemCurrencyNumCodeTextView.text = currency.numCode
-            itemCurrencyValueTextView.text = currency.value.toString()
+            itemCurrencyCharCodeTextView.text =
+                root.context.getString(R.string.char_code, currency.charCode)
+            itemCurrencyNominalTextView.text =
+                root.context.getString(R.string.nominal, currency.nominal.toString())
+            itemCurrencyValueTextView.text =
+                root.context.getString(R.string.current_value, currency.value.toString())
         }
     }
 }

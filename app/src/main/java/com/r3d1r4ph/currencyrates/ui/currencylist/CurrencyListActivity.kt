@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.r3d1r4ph.currencyrates.R
 import com.r3d1r4ph.currencyrates.databinding.ActivityCurrencyListBinding
+import com.r3d1r4ph.currencyrates.ui.currencylist.adapter.CurrencyAdapter
+import com.r3d1r4ph.currencyrates.ui.currencylist.adapter.CurrencyItemDecoration
 import com.r3d1r4ph.currencyrates.utils.exceptions.ExceptionHolder
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.ParseException
-import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -36,21 +36,7 @@ class CurrencyListActivity : AppCompatActivity() {
     private fun initObservers() {
         viewModel.general.observe(this) {
             currencyAdapter.submitList(it.currencyList)
-
-            val offsetDateTime = OffsetDateTime.parse(it.relevance.timestamp)
-            val instant = offsetDateTime.toInstant()
-            val ldt = offsetDateTime
-                .atZoneSameInstant(ZoneId.systemDefault())
-                .toLocalDateTime()
-
-            val myDate = Date.from(instant)
-
-            val formatter =
-                DateTimeFormatter.ofPattern("HH:mm:ss • dd MMMM yyyy", Locale("ru", "RU"))
-            val localFormatter = SimpleDateFormat("HH:mm:ss • dd MMMM yyyy", Locale("ru", "RU"))
-            //val formattedDate: String = localFormatter.format(offsetDateTime.toLocalDateTime())
-            viewBinding.currencyListRelevanceTextView.text =
-                getString(R.string.relevant_on, ldt.format(formatter))
+            setRelevantDate(it.relevance.timestamp)
         }
 
         viewModel.loading.observe(this) {
@@ -71,11 +57,24 @@ class CurrencyListActivity : AppCompatActivity() {
         }
     }
 
+    private fun setRelevantDate(timestamp: String) {
+        val offsetDateTime = OffsetDateTime.parse(timestamp)
+        val ldt = offsetDateTime
+            .atZoneSameInstant(ZoneId.systemDefault())
+            .toLocalDateTime()
+
+        val formatter =
+            DateTimeFormatter.ofPattern("HH:mm:ss • dd MMMM yyyy", Locale("ru", "RU"))
+        viewBinding.currencyListRelevanceTextView.text =
+            getString(R.string.relevant_on, ldt.format(formatter))
+    }
+
     private fun initView() = with(viewBinding) {
         currencyListRecycler.apply {
             adapter = currencyAdapter
             layoutManager =
                 LinearLayoutManager(this@CurrencyListActivity, LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(CurrencyItemDecoration())
         }
 
         currencyListRelevanceTextView.text =
@@ -84,23 +83,5 @@ class CurrencyListActivity : AppCompatActivity() {
         currencyListUpdateButton.setOnClickListener {
             viewModel.loadGeneralData()
         }
-    }
-
-    private fun getDateLocaleFromUTC(date: String): String {
-        var time = ""
-        val utcFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
-        utcFormatter.timeZone = TimeZone.getTimeZone("UTC")
-        var gpsUTCDate: Date? = null
-        try {
-            gpsUTCDate = utcFormatter.parse(date)
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-        val localFormatter = SimpleDateFormat("HH:mm • dd MMMM yyyy", Locale("ru", "RU"))
-        localFormatter.timeZone = TimeZone.getDefault()
-        gpsUTCDate?.let {
-            time = localFormatter.format(it.time)
-        }
-        return time
     }
 }

@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface CurrencyRepository {
 
     fun getGeneralInfo(): Flow<General>
-    suspend fun getCurrencyList(): Result<Boolean>
+    suspend fun loadCurrencyList(): Result<Boolean>
 }

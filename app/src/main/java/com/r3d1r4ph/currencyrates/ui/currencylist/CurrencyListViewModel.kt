@@ -44,7 +44,7 @@ class CurrencyListViewModel @Inject constructor(
     fun loadGeneralData() {
         viewModelScope.launch {
             _loading.value = true
-            val response = currencyRepository.getCurrencyList()
+            val response = currencyRepository.loadCurrencyList()
 
             if (response.isFailure) {
                 handleException(response.exceptionOrNull())

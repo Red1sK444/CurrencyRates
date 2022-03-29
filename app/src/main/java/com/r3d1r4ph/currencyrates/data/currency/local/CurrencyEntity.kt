@@ -20,7 +20,7 @@ import com.r3d1r4ph.currencyrates.domain.Currency
 data class CurrencyEntity(
     @PrimaryKey(autoGenerate = false)
     val id: String,
-    val numCode: String,
+    val nominal: Int,
     val charCode: String,
     val name: String,
     val value: Float,
@@ -30,7 +30,7 @@ data class CurrencyEntity(
     fun toDomain(): Currency =
         Currency(
             id = id,
-            numCode = numCode,
+            nominal = nominal,
             charCode = charCode,
             name = name,
             value = value

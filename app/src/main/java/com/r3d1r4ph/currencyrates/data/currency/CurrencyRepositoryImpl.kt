@@ -17,9 +17,9 @@ class CurrencyRepositoryImpl @Inject constructor(
 ) : CurrencyRepository {
 
     override fun getGeneralInfo() =
-        relevanceDao.getGeneralInfo().map { it?.toDomain() }.filterNotNull()
+        relevanceDao.getGeneralInfo().filterNotNull().map { it.toDomain() }
 
-    override suspend fun getCurrencyList(): Result<Boolean> {
+    override suspend fun loadCurrencyList(): Result<Boolean> {
         return safeApiCall(
             apiCall = {
                 currencyService.getCurrencyList()

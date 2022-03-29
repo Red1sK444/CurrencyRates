@@ -12,4 +12,10 @@
     <string name="no_connectivity_exception">Нет соединения с сетью</string>
     <string name="empty_response_exception">Данные не получены</string>
     <!-- -->
+    
+    <!-- Currency Item -->
+    <string name="current_value">Текущий курс: %s</string>
+    <string name="char_code">Сокращенно: %s</string>
+    <string name="nominal">Номинал: %s</string>
+    <!-- -->
 </resources>
