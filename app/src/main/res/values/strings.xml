@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">CurrencyRates</string>
+
+    <!-- Currency List Screen -->
     <string name="currency_list">Список валют</string>
     <string name="relevant_on">Актуально на: %s</string>
     <string name="update">Обновить</string>
+    <!-- -->
+
+    <!-- Exceptions -->
+    <string name="unknown_exception">Неизвестная ошибка</string>
+    <string name="no_connectivity_exception">Нет соединения с сетью</string>
+    <string name="empty_response_exception">Данные не получены</string>
+    <!-- -->
 </resources>

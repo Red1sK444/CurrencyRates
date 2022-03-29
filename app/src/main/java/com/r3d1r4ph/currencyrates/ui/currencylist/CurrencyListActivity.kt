@@ -1,19 +1,19 @@
 package com.r3d1r4ph.currencyrates.ui.currencylist
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.r3d1r4ph.currencyrates.R
 import com.r3d1r4ph.currencyrates.databinding.ActivityCurrencyListBinding
+import com.r3d1r4ph.currencyrates.utils.exceptions.ExceptionHolder
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -28,12 +28,13 @@ class CurrencyListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_currency_list)
 
-        with(viewBinding.currencyListRecycler) {
-            adapter = currencyAdapter
-            layoutManager =
-                LinearLayoutManager(this@CurrencyListActivity, LinearLayoutManager.VERTICAL, false)
-        }
+        initObservers()
+        initView()
 
+        viewModel.getGeneralData()
+    }
+
+    private fun initObservers() {
         viewModel.general.observe(this) {
             currencyAdapter.submitList(it.currencyList)
 
@@ -45,12 +46,31 @@ class CurrencyListActivity : AppCompatActivity() {
 
             val myDate = Date.from(instant)
 
-            val formatter = DateTimeFormatter.ofPattern("HH:mm:ss • dd MMMM yyyy", Locale("ru", "RU"))
+            val formatter =
+                DateTimeFormatter.ofPattern("HH:mm:ss • dd MMMM yyyy", Locale("ru", "RU"))
             val localFormatter = SimpleDateFormat("HH:mm:ss • dd MMMM yyyy", Locale("ru", "RU"))
             //val formattedDate: String = localFormatter.format(offsetDateTime.toLocalDateTime())
-            viewBinding.currencyListRelevanceTextView.text = getString(R.string.relevant_on, ldt.format(formatter))
+            viewBinding.currencyListRelevanceTextView.text =
+                getString(R.string.relevant_on, ldt.format(formatter))
         }
-        viewModel.getGeneralData()
+
+        viewModel.exception.observe(this) { holder ->
+            viewBinding.currencyListRelevanceTextView.text = getString(R.string.relevant_on, "")
+
+            val message = when (holder) {
+                is ExceptionHolder.Resource -> resources.getString(holder.messageId)
+                is ExceptionHolder.Server -> holder.message
+            }
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun initView() {
+        with(viewBinding.currencyListRecycler) {
+            adapter = currencyAdapter
+            layoutManager =
+                LinearLayoutManager(this@CurrencyListActivity, LinearLayoutManager.VERTICAL, false)
+        }
     }
 
     private fun getDateLocaleFromUTC(date: String): String {

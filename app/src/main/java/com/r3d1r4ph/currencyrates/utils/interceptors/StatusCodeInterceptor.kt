@@ -1,6 +1,5 @@
 package com.r3d1r4ph.currencyrates.utils.interceptors
 
-import com.r3d1r4ph.currencyrates.utils.exceptions.NotFoundException
 import com.r3d1r4ph.currencyrates.utils.exceptions.StatusCodeException
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -20,7 +19,6 @@ class StatusCodeInterceptor : Interceptor {
     private fun handleResponse(response: Response): Response {
         when (response.code) {
             in 200..300 -> Unit
-            404 -> throw NotFoundException()
             else -> throw StatusCodeException(JSONObject(response.body?.string()).getString("message"))
         }
 

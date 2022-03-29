@@ -4,5 +4,5 @@ import com.r3d1r4ph.currencyrates.domain.General
 
 interface CurrencyRepository {
 
-    suspend fun getCurrencyList(): General?
+    suspend fun getCurrencyList(): Result<General>
 }
