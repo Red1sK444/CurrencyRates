@@ -14,7 +14,7 @@
     <!-- -->
 
     <!-- Currency Item -->
-    <string name="current_value">Текущий курс: %s</string>
+    <string name="current_value">Текущий курс: %s руб.</string>
     <string name="char_code">Сокращенно: %s</string>
     <string name="nominal">Номинал: %s</string>
     <!-- -->
