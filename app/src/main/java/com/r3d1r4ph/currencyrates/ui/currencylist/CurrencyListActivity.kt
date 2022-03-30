@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.r3d1r4ph.currencyrates.R
 import com.r3d1r4ph.currencyrates.databinding.ActivityCurrencyListBinding
+import com.r3d1r4ph.currencyrates.domain.Currency
+import com.r3d1r4ph.currencyrates.ui.converter.ConverterDialogFragment
 import com.r3d1r4ph.currencyrates.ui.currencylist.adapter.CurrencyAdapter
 import com.r3d1r4ph.currencyrates.ui.currencylist.adapter.CurrencyItemDecoration
 import com.r3d1r4ph.currencyrates.utils.exceptions.ExceptionHolder
@@ -23,7 +25,13 @@ class CurrencyListActivity : AppCompatActivity() {
 
     private val viewBinding by viewBinding(ActivityCurrencyListBinding::bind, R.id.rootLayout)
     private val viewModel by viewModels<CurrencyListViewModel>()
-    private val currencyAdapter = CurrencyAdapter()
+
+    private val currencyAdapterListener = object : CurrencyAdapter.CurrencyAdapterListener {
+        override fun onItemClick(currency: Currency) {
+            showDialog(currencyId = currency.id)
+        }
+    }
+    private val currencyAdapter = CurrencyAdapter(currencyAdapterListener)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +72,7 @@ class CurrencyListActivity : AppCompatActivity() {
             .toLocalDateTime()
 
         val formatter =
-            DateTimeFormatter.ofPattern("HH:mm:ss • dd MMMM yyyy", Locale("ru", "RU"))
+            DateTimeFormatter.ofPattern("HH:mm • dd MMMM yyyy", Locale("ru", "RU"))
         viewBinding.currencyListRelevanceTextView.text =
             getString(R.string.relevant_on, ldt.format(formatter))
     }
@@ -83,5 +91,14 @@ class CurrencyListActivity : AppCompatActivity() {
         currencyListUpdateButton.setOnClickListener {
             viewModel.loadGeneralData()
         }
+    }
+
+    private fun showDialog(currencyId: String) {
+        ConverterDialogFragment
+            .newInstance(currencyId)
+            .show(
+                supportFragmentManager,
+                ConverterDialogFragment.TAG
+            )
     }
 }

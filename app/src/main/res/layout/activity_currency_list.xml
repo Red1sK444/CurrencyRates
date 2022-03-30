@@ -72,5 +72,4 @@
         app:layout_constraintEnd_toEndOf="@id/currencyListRecycler"
         app:layout_constraintStart_toStartOf="@id/currencyListRecycler"
         app:layout_constraintTop_toTopOf="@id/currencyListRecycler" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

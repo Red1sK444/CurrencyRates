@@ -12,10 +12,17 @@
     <string name="no_connectivity_exception">Нет соединения с сетью</string>
     <string name="empty_response_exception">Данные не получены</string>
     <!-- -->
-    
+
     <!-- Currency Item -->
     <string name="current_value">Текущий курс: %s</string>
     <string name="char_code">Сокращенно: %s</string>
     <string name="nominal">Номинал: %s</string>
+    <!-- -->
+
+    <!-- Converter Dialog -->
+    <string name="rub">RUB</string>
+    <string name="input_sum_in_rub">Введите сумму в рублях..\.</string>
+    <string name="convert_message">%s RUB = %s %s</string>
+    <string name="convert_in">Конвертировать в %s</string>
     <!-- -->
 </resources>

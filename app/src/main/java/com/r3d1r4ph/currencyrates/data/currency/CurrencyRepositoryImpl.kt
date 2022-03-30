@@ -4,6 +4,7 @@ import com.r3d1r4ph.currencyrates.data.currency.local.CurrencyDao
 import com.r3d1r4ph.currencyrates.data.currency.local.RelevanceDao
 import com.r3d1r4ph.currencyrates.data.currency.network.CurrencyService
 import com.r3d1r4ph.currencyrates.data.currency.network.GeneralDto
+import com.r3d1r4ph.currencyrates.domain.Currency
 import com.r3d1r4ph.currencyrates.utils.exceptions.EmptyResponseException
 import com.r3d1r4ph.currencyrates.utils.safeApiCall
 import kotlinx.coroutines.flow.filterNotNull
@@ -41,4 +42,7 @@ class CurrencyRepositoryImpl @Inject constructor(
         val insertedId = relevanceDao.insertRelevance(dto.toRelevanceEntity())
         currencyDao.insertAll(dto.toCurrencyEntityList(insertedId))
     }
+
+    override suspend fun getCurrencyById(id: String): Currency =
+        currencyDao.getCurrencyById(id).toDomain()
 }

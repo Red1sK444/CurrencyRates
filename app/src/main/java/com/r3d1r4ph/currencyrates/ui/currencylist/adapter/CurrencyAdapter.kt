@@ -10,7 +10,9 @@ import com.r3d1r4ph.currencyrates.R
 import com.r3d1r4ph.currencyrates.databinding.ItemRecyclerCurrencyBinding
 import com.r3d1r4ph.currencyrates.domain.Currency
 
-class CurrencyAdapter : ListAdapter<Currency, CurrencyAdapter.ViewHolder>(DIFF) {
+class CurrencyAdapter(
+    private val listener: CurrencyAdapterListener
+) : ListAdapter<Currency, CurrencyAdapter.ViewHolder>(DIFF) {
 
     private companion object {
         val DIFF = object : DiffUtil.ItemCallback<Currency>() {
@@ -34,8 +36,14 @@ class CurrencyAdapter : ListAdapter<Currency, CurrencyAdapter.ViewHolder>(DIFF) 
         holder.bind(getItem(position))
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ItemRecyclerCurrencyBinding.bind(view)
+
+        init {
+            binding.root.setOnClickListener {
+                listener.onItemClick(getItem(bindingAdapterPosition))
+            }
+        }
 
         fun bind(currency: Currency) = with(binding) {
             itemCurrencyNameTextView.text = currency.name
@@ -46,5 +54,9 @@ class CurrencyAdapter : ListAdapter<Currency, CurrencyAdapter.ViewHolder>(DIFF) 
             itemCurrencyValueTextView.text =
                 root.context.getString(R.string.current_value, currency.value.toString())
         }
+    }
+
+    interface CurrencyAdapterListener {
+        fun onItemClick(currency: Currency)
     }
 }
